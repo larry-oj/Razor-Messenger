@@ -1,4 +1,5 @@
 using Razor_Messenger.Data;
+using Razor_Messenger.Services;
 using Razor_Messenger.Services.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MessengerContext>();
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection(SecurityOptions.Security));
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
