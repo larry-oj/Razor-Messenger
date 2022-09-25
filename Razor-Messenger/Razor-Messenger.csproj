@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Razor-Messenger.Data\Razor-Messenger.Data.csproj" />
+      <ProjectReference Include="..\Razor-Messenger.Services\Razor-Messenger.Services.csproj" />
     </ItemGroup>
 
 </Project>
