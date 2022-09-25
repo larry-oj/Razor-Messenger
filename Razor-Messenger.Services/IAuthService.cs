@@ -4,7 +4,8 @@ namespace Razor_Messenger.Services;
 
 public interface IAuthService
 {
-    Task<User> RegisterAsync(string username, string password);
-    Task<User> LoginAsync(string username, string password);
-    Task<string> HashPasswordAsync(string password);
+    User Register(string username, string password);
+    User Login(string username, string password);
+    string HashPassword(string password, string salt);
+    string CreateSalt(int size);
 }
