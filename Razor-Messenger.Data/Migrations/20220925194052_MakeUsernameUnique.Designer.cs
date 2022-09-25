@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Razor_Messenger.Data;
@@ -11,9 +12,10 @@ using Razor_Messenger.Data;
 namespace Razor_Messenger.Data.Migrations
 {
     [DbContext(typeof(MessengerContext))]
-    partial class MessengerContextModelSnapshot : ModelSnapshot
+    [Migration("20220925194052_MakeUsernameUnique")]
+    partial class MakeUsernameUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
