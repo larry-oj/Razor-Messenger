@@ -14,6 +14,8 @@ public class User
     [Required] // will be hashed
     public string Password { get; set; }
     
+    public string PasswordSalt { get; set; }
+    
     public DateTime CreatedAt { get; set; }
 
     public User()
@@ -21,10 +23,11 @@ public class User
         CreatedAt = DateTime.UtcNow;
     }
 
-    public User(string username, string password)
+    public User(string username, string password, string passwordSalt)
         : this()
     {
         Username = username;
         Password = password;
+        PasswordSalt = passwordSalt;
     }
 }
