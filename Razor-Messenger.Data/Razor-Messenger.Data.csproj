@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
+        <RootNamespace>Razor_Messenger.Data</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Razor_Messenger</RootNamespace>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

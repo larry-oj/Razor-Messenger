@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor-Messenger", "Razor-Messenger.csproj", "{00F6E8E3-A887-4E37-9740-6A6A01AA7961}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor-Messenger.Data", "..\Razor-Messenger.Data\Razor-Messenger.Data.csproj", "{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{00F6E8E3-A887-4E37-9740-6A6A01AA7961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00F6E8E3-A887-4E37-9740-6A6A01AA7961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00F6E8E3-A887-4E37-9740-6A6A01AA7961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
