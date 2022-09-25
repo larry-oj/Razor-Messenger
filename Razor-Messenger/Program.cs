@@ -1,7 +1,10 @@
+using Razor_Messenger.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<MessengerContext>();
 
 var app = builder.Build();
 
