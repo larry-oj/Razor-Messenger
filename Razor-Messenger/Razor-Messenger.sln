@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor-Messenger", "Razor-Me
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor-Messenger.Data", "..\Razor-Messenger.Data\Razor-Messenger.Data.csproj", "{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor-Messenger.Services", "..\Razor-Messenger.Services\Razor-Messenger.Services.csproj", "{2DBA8575-7155-4D05-841D-3F7C7BC18BB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADB8E38E-C18D-4AE5-88C7-EADF66F5A952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DBA8575-7155-4D05-841D-3F7C7BC18BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBA8575-7155-4D05-841D-3F7C7BC18BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DBA8575-7155-4D05-841D-3F7C7BC18BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBA8575-7155-4D05-841D-3F7C7BC18BB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
