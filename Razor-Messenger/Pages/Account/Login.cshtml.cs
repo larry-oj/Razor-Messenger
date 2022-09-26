@@ -1,22 +1,57 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Razor_Messenger.Data.Models;
+using Razor_Messenger.Services;
+using Razor_Messenger.Services.Exceptions;
 
 namespace Razor_Messenger.Pages.Account;
 
 public class Login : PageModel
 {
     [BindProperty] public LoginCredentialsVm Credentials { get; set; }
+    
+    private readonly IAuthService _authService;
 
+    public Login(IAuthService authService)
+    {
+        _authService = authService;
+    }
+    
     public void OnGet()
     {
 
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPost()
     {
         if (!ModelState.IsValid)
             return Page();
+
+        User user;
+        try
+        {
+            user = _authService.Login(Credentials.Username, Credentials.Password);
+        }
+        catch (Exception e)
+        {
+            if (e is not InvalidCredentialsException)
+                return RedirectToPage("/Error");
+            
+            ModelState.AddModelError("Credentials.Username", "Invalid username or password!");
+            return Page();
+        }
+        
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, user.Username)
+        };
+        var identity = new ClaimsIdentity(claims, "PizzaSlice");
+        var principal = new ClaimsPrincipal(identity);
+        
+        await HttpContext.SignInAsync("PizzaSlice", principal);
 
         return RedirectToPage("/Index");
     }
