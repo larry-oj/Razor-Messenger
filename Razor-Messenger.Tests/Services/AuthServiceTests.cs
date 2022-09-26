@@ -3,14 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using Razor_Messenger.Data;
-using Razor_Messenger.Data.Models;
 using Razor_Messenger.Services;
 using Razor_Messenger.Services.Exceptions;
 using Razor_Messenger.Services.Options;
 
-namespace Razor_Messenger.Tests;
+namespace Razor_Messenger.Tests.Services;
 
-public class IAuthServiceTests
+public class AuthServiceTests
 {
     private MessengerContext _context;
     private IOptions<SecurityOptions> _securityOptions;
