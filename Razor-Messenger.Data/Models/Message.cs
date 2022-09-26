@@ -6,7 +6,7 @@ namespace Razor_Messenger.Data.Models;
 public class Message
 {
     [Key] [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public decimal Id { get; set; }
+    public int Id { get; set; }
     
     [Required]
     public User Sender { get; set; }
