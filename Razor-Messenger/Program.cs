@@ -13,6 +13,11 @@ builder.Services.AddDbContext<MessengerContext>(ops =>
     ops.UseNpgsql(builder.Configuration.GetSection("Database:ConnectionString").Value);
 });
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddAuthentication()
+    .AddCookie("PizzaSlice", config =>
+    {
+        config.Cookie.Name = "PizzaSlice";
+    });
 
 var app = builder.Build();
 
@@ -24,11 +29,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<MessengerContext>();
+    context.Database.EnsureCreated();
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
