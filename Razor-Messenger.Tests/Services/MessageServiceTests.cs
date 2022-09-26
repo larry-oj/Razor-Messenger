@@ -25,6 +25,14 @@ public class MessageServiceTests
         _context.Add(new User("user_one", "pass", "salt"));
         _context.Add(new User("user_two", "pass", "salt"));
         _context.SaveChanges();
+        _messageService = new MessageService(_context);
+    }
+    
+    [TearDown]
+    public void TearDown()
+    {
+        _context.Messages.RemoveRange(_context.Messages);
+        _context.SaveChanges();
     }
 
     #region SendMessageAsync
@@ -65,7 +73,7 @@ public class MessageServiceTests
     [Test]
     public void SendMessageAsync_InvalidReceiver_Exception()
     {
-        Assert.ThrowsAsync<InvalidSenderException>(async () =>
+        Assert.ThrowsAsync<InvalidReceiverException>(async () =>
             await _messageService.SendMessageAsync("user_one", "user_three", "SendMessageAsync_InvalidReceiver_Exception"));
     }
     
@@ -92,8 +100,6 @@ public class MessageServiceTests
         var messages = _messageService.GetLastMessages("user_one", "user_two", 4);
         
         Assert.AreEqual(4, messages.Count());
-
-        _context.Messages.RemoveRange(_context.Messages);
     }
     
     [Test]
@@ -113,8 +119,6 @@ public class MessageServiceTests
         Assert.AreEqual("two" + msgContent, messages[1].Content);
         Assert.AreEqual("three" + msgContent, messages[2].Content);
         Assert.AreEqual("four" + msgContent, messages[3].Content);
-        
-        _context.Messages.RemoveRange(_context.Messages);
     }
     
     [Test]
@@ -127,7 +131,7 @@ public class MessageServiceTests
     [Test]
     public void GetLastMessages_InvalidReceiver_Exception()
     {
-        Assert.Throws<InvalidSenderException>(() =>
+        Assert.Throws<InvalidReceiverException>(() =>
             _messageService.GetLastMessages("user_one", "user_three", 4));
     }
     
@@ -151,8 +155,6 @@ public class MessageServiceTests
         var messages = _messageService.GetLastMessages("user_one", "user_two", 2, 2);
         
         Assert.AreEqual(2, messages.Count());
-
-        _context.Messages.RemoveRange(_context.Messages);
     }
     
     [Test]
@@ -168,10 +170,8 @@ public class MessageServiceTests
         var messages = _messageService.GetLastMessages("user_one", "user_two", 2, 2).ToList();
 
         Assert.AreEqual(2, messages.Count);
-        Assert.AreEqual("three" + msgContent, messages.First().Content);
-        Assert.AreEqual("four" + msgContent, messages.Last().Content);
-
-        _context.Messages.RemoveRange(_context.Messages);
+        Assert.AreEqual("one" + msgContent, messages.First().Content);
+        Assert.AreEqual("two" + msgContent, messages.Last().Content);
     }
     
     [Test]
@@ -180,15 +180,10 @@ public class MessageServiceTests
         var msgContent = "GetLastMessages_SkipMoreThanExist_Exception";
         
         _messageService.SendMessageAsync("user_one", "user_two", "one" + msgContent);
-        _messageService.SendMessageAsync("user_two", "user_one", "two" + msgContent);
-        _messageService.SendMessageAsync("user_one", "user_two", "three" + msgContent);
-        _messageService.SendMessageAsync("user_two", "user_one", "four" + msgContent);
-        
-        var messages = _messageService.GetLastMessages("user_one", "user_two", 2, 4);
+
+        var messages = _messageService.GetLastMessages("user_one", "user_two", 2, 1);
         
         Assert.AreEqual(0, messages.Count());
-        
-        _context.Messages.RemoveRange(_context.Messages);
     }
 
     #endregion
