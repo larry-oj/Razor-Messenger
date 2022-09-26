@@ -22,9 +22,6 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                    </li>
                     @if (base.User.Identity!.IsAuthenticated)
                     {
                         <form method="post" class="form-inline" asp-page="/Account/Logout">
@@ -53,7 +50,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2022 - Razor Messenger - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        &copy; <a href="https://larryoj.tk" target="_blank">Larry oJ</a> 2022 - Razor Messenger - <a href="https://github.com/larry-oj/Razor-Messenger"  target="_blank">GitHub</a>
     </div>
 </footer>
 
