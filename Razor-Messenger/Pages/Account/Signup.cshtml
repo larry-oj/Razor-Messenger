@@ -1,0 +1,51 @@
+﻿@page
+@model Razor_Messenger.Pages.Account.Signup
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container w-100" style="max-width: 400px;">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="text-center">Signup</h1>
+        </div>
+    </div>
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" asp-for="Credentials.Username" class="form-control">
+                    <label asp-for="Credentials.Username"></label>
+                    <span class="text-danger" asp-validation-for="Credentials.Username"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="password" asp-for="Credentials.Password" class="form-control">
+                    <label asp-for="Credentials.Password"></label>
+                    <span class="text-danger" asp-validation-for="Credentials.Password"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="password" asp-for="Credentials.ConfirmPassword" class="form-control">
+                    <label asp-for="Credentials.ConfirmPassword"></label>
+                    <span class="text-danger" asp-validation-for="Credentials.ConfirmPassword"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3 d-flex align-items-center">
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="Register"/>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <span>Already have an account? - <a asp-area="" asp-page="/Account/Login">Login</a></span>
+    </div>
+</div>
