@@ -51,7 +51,12 @@ public class Login : PageModel
         var identity = new ClaimsIdentity(claims, "PizzaSlice");
         var principal = new ClaimsPrincipal(identity);
         
-        await HttpContext.SignInAsync("PizzaSlice", principal);
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = Credentials.RememberMe
+        };
+        
+        await HttpContext.SignInAsync("PizzaSlice", principal, authProperties);
 
         return RedirectToPage("/Index");
     }

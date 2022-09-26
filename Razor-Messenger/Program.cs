@@ -17,6 +17,7 @@ builder.Services.AddAuthentication("PizzaSlice")
     .AddCookie("PizzaSlice", config =>
     {
         config.Cookie.Name = "PizzaSlice";
+        config.ExpireTimeSpan = TimeSpan.FromHours(2);
     });
 
 var app = builder.Build();
