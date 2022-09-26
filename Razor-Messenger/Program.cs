@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Razor_Messenger.Data;
-using Razor_Messenger.Options;
 using Razor_Messenger.Services;
 using Razor_Messenger.Services.Options;
 
