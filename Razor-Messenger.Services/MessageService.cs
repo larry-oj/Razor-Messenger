@@ -1,4 +1,5 @@
-﻿using Razor_Messenger.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Razor_Messenger.Data;
 using Razor_Messenger.Data.Models;
 using Razor_Messenger.Services.Exceptions;
 
@@ -47,6 +48,8 @@ public class MessageService : IMessageService
                       ?? throw new InvalidReceiverException();
 
         var messages = _context.Messages
+            .Include(m => m.Sender)
+            .Include(m => m.Receiver)
             .Where(m => (m.Sender == userOne && m.Receiver == userTwo) || 
                         (m.Receiver == userOne && m.Sender == userTwo))
             .OrderByDescending(m => m.SentAt) 

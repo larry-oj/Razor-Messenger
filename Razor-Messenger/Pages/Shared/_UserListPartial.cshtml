@@ -1,9 +1,24 @@
-﻿@model List<_UserPartial>
+﻿@model List<_UserListPartial>
 
 <div class="list-group" style="height: 600px; overflow-y: scroll;">
 @foreach (var user in Model)
 {
-    <partial name="_UserPartial" model="user" />
+    <a asp-area="" asp-page="/Messenger" asp-route-chatUser="@user.Username" id="userlist-@user.Username" class="list-group-item" aria-current="true">
+         <div class="d-flex w-100 justify-content-between">
+             <h5 class="mb-1 nowrap">
+                 @user.Username
+             </h5>
+             @if (user.LastMessageTime.Hour == 0 && user.LastMessageTime.Minute == 0)
+             {
+                 <small class="text-muted"></small>
+             }
+             else
+             {
+                 <small class="text-muted">@user.LastMessageTime.Hour:@user.LastMessageTime.Minute</small>
+             }
+         </div>
+         <p class="text-muted mb-1 w-100 nowrap">@user.LastMessageContent</p>
+     </a>
 }                 
 </div>
 
