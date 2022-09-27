@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Razor_Messenger.Data;
+using Razor_Messenger.Hubs;
 using Razor_Messenger.Services;
 using Razor_Messenger.Services.Options;
 
@@ -21,6 +22,7 @@ builder.Services.AddAuthentication("PizzaSlice")
         config.Cookie.Name = "PizzaSlice";
         config.ExpireTimeSpan = TimeSpan.FromHours(2);
     });
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -49,5 +51,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
