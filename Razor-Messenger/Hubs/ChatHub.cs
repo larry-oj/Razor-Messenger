@@ -13,6 +13,11 @@ public class ChatHub : Hub<IChatClient>
     {
         _messageService = messageService;
     }
+    
+    public async Task Register(string username)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, username);
+    }
 
     public async Task SendMessage(string receiver, string message)
     {
@@ -22,6 +27,6 @@ public class ChatHub : Hub<IChatClient>
 
         var time = $"{DateTime.UtcNow.Hour}:{DateTime.UtcNow.Minute}";
         await Clients.Caller.SendMessage(message, time);
-        await Clients.User(receiver).ReceiveMessage(message, time);
+        await Clients.Group(receiver).ReceiveMessage(message, time);
     }
 }

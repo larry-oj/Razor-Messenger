@@ -11,7 +11,7 @@ public class Messenger : PageModel
 {
     public string? ChatUser { get; set; }
     
-    public List<_UserListPartial> Users { get; set; }
+    public List<_UserPartial> Users { get; set; }
     public List<_MessagePartial>? Messages { get; set; }
     
     private readonly IUserService _userService;
@@ -39,12 +39,12 @@ public class Messenger : PageModel
             }
         }
         
-        Users = new List<_UserListPartial>();
+        Users = new List<_UserPartial>();
         var users = _userService.GetAllUsers(currentUserName).ToList();
         foreach (var user in users)
         {
             var lastMessage = _messageService.GetLastMessages(currentUserName, user.Username, 1).ToList();
-            Users.Add(new _UserListPartial
+            Users.Add(new _UserPartial
             {
                 Username = user.Username,
                 LastMessageContent = lastMessage.Count > 0 ? lastMessage[0].Content : "",

@@ -11,12 +11,12 @@
     <div class="d-flex justify-content-center align-items-start">
         <div class="col-4 p-0" style="min-width: 300px; max-width: 450px;">
             <div class="container px-2 w-100">
-                <partial name="_UserListPartial" model="Model.Users"/>
+                <partial name="_UserPartial" model="Model.Users"/>
             </div>
         </div>
         <div class="col-7 p-0 px-2 m-0" style="width: 450px;">
             <div class="container p-0 m-0 w-100 d-flex flex-column" style="height: 600px;">
-                <div class="w-100 p-2 m-0 border rounded d-flex flex-column" style="height: 540px; overflow-y: scroll;">
+                <div id="messages-area" class="w-100 p-2 m-0 border rounded d-flex flex-column" style="height: 540px; overflow-y: scroll;">
                     @if (Model.Messages != null)
                     {
                         @foreach(var message in Model.Messages)
@@ -27,13 +27,15 @@
                 </div>
                 <div class="w-100 py-2 m-0" style="height: 60px;">
                     <div class="input-group h-100">
-                        <input type="text" class="form-control" placeholder="Your message...">
-                        <input type="submit" class="btn btn-primary" value="Send">
+                        <input type="text" id="new-message-text" class="form-control" placeholder="Your message...">
+                        <input type="button" id="new-message-btn" class="btn btn-primary" value="Send">
                     </div>
                 </div>
                 @if (Model.ChatUser != null)
                 {
-                    // signalr turns on
+                    <span id="sender-username" style="display: none;">@base.User.Identity!.Name</span>
+                    <span id="reveiver-username" style="display: none;">@Model.ChatUser</span>
+                    <script src="~/js/chat.js"></script>
                 }
             </div>
         </div>

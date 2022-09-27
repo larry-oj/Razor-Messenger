@@ -2,17 +2,17 @@
 
 namespace Razor_Messenger.Pages.Shared;
 
-public class _UserListPartial
+public class _UserPartial
 {
     public string Username { get; set; }
     public DateTime LastMessageTime { get; set; }
     public string LastMessageContent { get; set; }
 
-    public _UserListPartial()
+    public _UserPartial()
     {
     }
     
-    public _UserListPartial(string username, DateTime lastMessageTime, string lastMessageContent)
+    public _UserPartial(string username, DateTime lastMessageTime, string lastMessageContent)
     {
         Username = username;
         LastMessageTime = lastMessageTime;
