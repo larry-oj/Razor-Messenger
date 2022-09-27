@@ -1,0 +1,46 @@
+﻿@page
+@model Razor_Messenger.Pages.Messenger
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1 class="text-center mb-3">Razor Messenger</h1>
+<div class="container" style="min-width: 700px;">
+    <div class="d-flex justify-content-center align-items-start">
+        
+        <div class="col-4 p-0" style="min-width: 300px; max-width: 450px;">
+
+            <div class="container px-2 w-100">
+                <partial name="_UserListPartial" model="Model.Users"/>
+            </div>
+
+        </div>
+        <div class="col-7 p-0 px-2 m-0" style="width: 450px;">
+
+            <!-- <div class="container p-0 m-0 w-100 d-flex flex-column" style="height: 600px;">
+                <div class="w-100 p-2 m-0 border rounded d-flex flex-column" style="height: 540px; overflow-y: scroll;">
+
+                    <div class="p-2 mb-1 d-flex flex-column bg-light border rounded align-items-end text-dark"
+                        style="width: fit-content; min-width: 10%; max-width: 75%;">
+                        <p class="mb-0 text-wrap ">Some text</p>
+                        <small>00:00</small>
+                    </div>
+
+                    <div class="p-2 mb-1 d-flex flex-column bg-primary rounded align-items-end text-white align-self-end"
+                        style="width: fit-content; min-width: 10%; max-width: 75%;">
+                        <p class="mb-0 text-wrap ">Some text but longer</p>
+                        <small>00:00</small>
+                    </div>
+
+                </div>
+                <div class="w-100 py-2 m-0" style="height: 60px;">
+                    <div class="input-group h-100">
+                        <input type="text" class="form-control" placeholder="Your message...">
+                        <input type="submit" class="btn btn-primary" value="Send">
+                    </div>
+                </div>
+            </div> -->
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+﻿@model List<_UserPartial>
+
+<div class="list-group" style="height: 600px; overflow-y: scroll;">
+@foreach (var user in Model)
+{
+    <partial name="_UserPartial" model="user" />
+}                 
+</div>
+
+
