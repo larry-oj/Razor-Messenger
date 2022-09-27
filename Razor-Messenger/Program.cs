@@ -13,6 +13,8 @@ builder.Services.AddDbContext<MessengerContext>(ops =>
     ops.UseNpgsql(builder.Configuration.GetSection("Database:ConnectionString").Value);
 });
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAuthentication("PizzaSlice")
     .AddCookie("PizzaSlice", config =>
     {
