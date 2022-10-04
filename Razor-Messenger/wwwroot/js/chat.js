@@ -3,8 +3,8 @@
 const chat = document.getElementById("messages-area");
 const sendButton = document.getElementById("new-message-btn");
 const messageInput = document.getElementById("new-message-text");
-const sender = document.getElementById("sender-username").innerText;
-const receiver = document.getElementById("reveiver-username").innerText;
+
+document.getElementById(`userlist-${receiver}`).classList.add('bg-light');
 
 function scrollToBottom() {
     chat.scrollTop = chat.scrollHeight;
@@ -43,7 +43,7 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-document.getElementById("new-message-btn").addEventListener("click", function (event) {
+sendButton.addEventListener("click", function (event) {
     let message = messageInput.value;
     if (message === "" || message === null) return;
     

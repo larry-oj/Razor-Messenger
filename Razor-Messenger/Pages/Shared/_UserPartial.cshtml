@@ -14,10 +14,10 @@
              }
              else
              {
-                 <small class="text-muted">@user.LastMessageTime.Hour:@user.LastMessageTime.Minute</small>
+                 <small id="userlist-time-@user.Username" class="text-muted">@user.LastMessageTime.ToString("hh:mm")</small>
              }
          </div>
-         <p class="text-muted mb-1 w-100 nowrap">@user.LastMessageContent</p>
+         <p id="userlist-message-@user.Username" class="text-muted mb-1 w-100 nowrap">@user.LastMessageContent</p>
      </a>
 }                 
 </div>

@@ -8,10 +8,13 @@ namespace Razor_Messenger.Hubs;
 public class ChatHub : Hub<IChatClient>
 {
     private readonly IMessageService _messageService;
+    private readonly IHubContext<UserListHub, IUserListClient> _userListHub;
     
-    public ChatHub(IMessageService messageService)
+    public ChatHub(IMessageService messageService, 
+        IHubContext<UserListHub, IUserListClient> userListHub)
     {
         _messageService = messageService;
+        _userListHub = userListHub;
     }
     
     public async Task Register(string username)
@@ -25,8 +28,12 @@ public class ChatHub : Hub<IChatClient>
 
         await _messageService.SendMessageAsync(sender, receiver, message);
 
-        var time = $"{DateTime.UtcNow.Hour}:{DateTime.UtcNow.Minute}";
+        var time = DateTime.UtcNow.ToString("hh:mm");
+        
         await Clients.Caller.SendMessage(message, time);
+        await _userListHub.Clients.Group(sender).UpdateLastMessage(receiver, message, time);
+        
         await Clients.Group(receiver).ReceiveMessage(message, time);
+        await _userListHub.Clients.Group(receiver).UpdateLastMessage(sender, message, time);
     }
 }

@@ -13,6 +13,10 @@
             <div class="container px-2 w-100">
                 <partial name="_UserPartial" model="Model.Users"/>
             </div>
+            <script>
+                const sender = "@base.User.Identity!.Name";
+            </script>
+            <script src="~/js/userList.js"></script>
         </div>
         <div class="col-7 p-0 px-2 m-0" style="width: 450px;">
             <div class="container p-0 m-0 w-100 d-flex flex-column" style="height: 600px;">
@@ -33,8 +37,9 @@
                 </div>
                 @if (Model.ChatUser != null)
                 {
-                    <span id="sender-username" style="display: none;">@base.User.Identity!.Name</span>
-                    <span id="reveiver-username" style="display: none;">@Model.ChatUser</span>
+                    <script>
+                        const receiver = "@Model.ChatUser";
+                    </script>
                     <script src="~/js/chat.js"></script>
                 }
             </div>
