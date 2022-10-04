@@ -46,7 +46,8 @@ public class Signup : PageModel
         
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, Credentials.Username)
+            new(ClaimTypes.Name, Credentials.Username),
+            new(ClaimTypes.NameIdentifier, Credentials.Username)
         };
         var identity = new ClaimsIdentity(claims, "PizzaSlice");
         var principal = new ClaimsPrincipal(identity);

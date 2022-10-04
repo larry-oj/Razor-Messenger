@@ -7,10 +7,6 @@ userListConn.on("UpdateLastMessage", function (username, message, messageTime) {
     document.getElementById(`userlist-time-${username}`).innerText = messageTime;
 });
 
-userListConn.start().then(function () {
-    userListConn.invoke("Register", sender).catch(function (err) {
-        return console.error(err.toString());
-    });
-}).catch(function (err) {
+userListConn.start().catch(function (err) {
     return console.error(err.toString());
 });

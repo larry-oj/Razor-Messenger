@@ -36,9 +36,6 @@ connection.on("SendMessage", function (message, messageTime) {
 
 connection.start().then(function () {
     sendButton.disabled = false;
-    connection.invoke("Register", sender).catch(function (err) {
-        return console.error(err.toString());
-    });
 }).catch(function (err) {
     return console.error(err.toString());
 });
