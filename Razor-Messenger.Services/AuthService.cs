@@ -21,7 +21,7 @@ public class AuthService : IAuthService
 
     public User Register(string username, string password)
     {
-        if (_context.Users.Any(u => string.Equals(u.Username, username, StringComparison.CurrentCultureIgnoreCase)))
+        if (_context.Users.Any(u => u.Username.ToLower() == username.ToLower()))
         {
             throw new UserAlreadyExistsException();
         }
@@ -38,7 +38,7 @@ public class AuthService : IAuthService
 
     public User Login(string username, string password)
     {
-        var user = _context.Users.FirstOrDefault(u => string.Equals(u.Username, username, StringComparison.CurrentCultureIgnoreCase));
+        var user = _context.Users.FirstOrDefault(u => u.Username.ToLower() == username.ToLower());
         if (user == null)
             throw new InvalidCredentialsException();
 
