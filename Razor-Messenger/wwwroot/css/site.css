@@ -16,3 +16,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.nowrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.online {
+    color: lightgreen;
+}
