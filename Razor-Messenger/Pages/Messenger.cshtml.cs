@@ -44,11 +44,21 @@ public class Messenger : PageModel
         foreach (var user in users)
         {
             var lastMessage = _messageService.GetLastMessages(currentUserName, user.Username, 1).ToList();
+            var isSender = false;
+            if (lastMessage.Count > 0)
+            {
+                var msg = lastMessage[0];
+                if (msg.Sender.Username == currentUserName)
+                {
+                    isSender = true;
+                }
+            }
             Users.Add(new _UserPartial
             {
                 Username = user.Username,
                 LastMessageContent = lastMessage.Count > 0 ? lastMessage[0].Content : "",
-                LastMessageTime = lastMessage.Count > 0 ? lastMessage[0].SentAt : new DateTime(2000, 1, 1, 0, 0, 0)
+                LastMessageTime = lastMessage.Count > 0 ? lastMessage[0].SentAt : new DateTime(2000, 1, 1, 0, 0, 0),
+                IsSender = isSender
             });
         }
     }

@@ -6,7 +6,7 @@
     <a asp-area="" asp-page="/Messenger" asp-route-chatUser="@user.Username" id="userlist-@user.Username" class="list-group-item" aria-current="true">
          <div class="d-flex w-100 justify-content-between">
              <h5 id="userlist-name-@user.Username" class="mb-1 nowrap">
-                 @user.Username
+                 @user.Username <small id="userlist-onlinestatus-@user.Username" class="online-status">●</small>
              </h5>
              @if (user.LastMessageTime.Hour == 0 && user.LastMessageTime.Minute == 0)
              {
@@ -17,7 +17,9 @@
                  <small id="userlist-time-@user.Username" class="text-muted">@user.LastMessageTime.ToString("hh:mm")</small>
              }
          </div>
-         <p id="userlist-message-@user.Username" class="text-muted mb-1 w-100 nowrap">@user.LastMessageContent</p>
+        <p id="userlist-message-@user.Username" class="text-muted mb-1 w-100 nowrap">
+            @(user.IsSender ? "You: " : "")@user.LastMessageContent
+        </p>
      </a>
 }                 
 </div>
