@@ -11,6 +11,8 @@ public class User
     [Required]
     public string Username { get; set; }
     
+    public string DisplayName { get; set; }
+    
     [Required] // will be hashed
     public string Password { get; set; }
     
@@ -27,7 +29,14 @@ public class User
         : this()
     {
         Username = username;
+        DisplayName = username;
         Password = password;
         PasswordSalt = passwordSalt;
+    }
+    
+    public User(string username, string displayName, string password, string passwordSalt)
+        : this(username, password, passwordSalt)
+    {
+        DisplayName = displayName;
     }
 }
