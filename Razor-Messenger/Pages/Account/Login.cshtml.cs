@@ -46,7 +46,7 @@ public class Login : PageModel
         
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, user.Username),
+            new(ClaimTypes.Name, user.DisplayName),
             new(ClaimTypes.NameIdentifier, user.Username)
         };
         var identity = new ClaimsIdentity(claims, "PizzaSlice");

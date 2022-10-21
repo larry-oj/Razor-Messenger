@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Razor_Messenger.Hubs;
 
@@ -8,14 +9,14 @@ public class UserListHub : Hub<IUserListClient>
     
     public override Task OnConnectedAsync()
     {
-        var user = Context.User!.Identity!.Name!;
+        var user = Context.User!.FindFirstValue(ClaimTypes.NameIdentifier);
         Users.Add(user);
         return Clients.Others.UpdateOnlineStatus(user, true);
     }
     
     public override Task OnDisconnectedAsync(Exception? exception)
     {
-        var user = Context.User!.Identity!.Name!;
+        var user = Context.User!.FindFirstValue(ClaimTypes.NameIdentifier);
         Users.Remove(user);
         return Clients.Others.UpdateOnlineStatus(user, false);
     }

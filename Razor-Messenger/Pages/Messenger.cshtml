@@ -1,4 +1,5 @@
 ﻿@page "{chatUser?}"
+@using System.Security.Claims
 @model Razor_Messenger.Pages.Messenger
 @{
     ViewData["Title"] = "Home page";
@@ -14,7 +15,7 @@
                 <partial name="_UserPartial" model="Model.Users"/>
             </div>
             <script>
-                const sender = "@base.User.Identity!.Name";
+                const sender = "@base.User.FindFirstValue(ClaimTypes.NameIdentifier)";
             </script>
             <script src="~/js/userList.js?v=4"></script>
         </div>

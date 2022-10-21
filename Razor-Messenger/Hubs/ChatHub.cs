@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Razor_Messenger.Services;
 
@@ -19,7 +20,7 @@ public class ChatHub : Hub<IChatClient>
 
     public async Task SendMessage(string receiver, string message)
     {
-        var sender = base.Context.User!.Identity!.Name;
+        var sender = base.Context.User!.FindFirstValue(ClaimTypes.NameIdentifier);
 
         await _messageService.SendMessageAsync(sender, receiver, message);
 

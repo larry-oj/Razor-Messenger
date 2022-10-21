@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Razor_Messenger.Pages.Shared;
@@ -26,7 +27,7 @@ public class Messenger : PageModel
     
     public void OnGet(string? chatUser)
     {
-        var currentUserName = base.User.Identity!.Name!;
+        var currentUserName = base.User.FindFirstValue(ClaimTypes.NameIdentifier);
         
         if (chatUser != null)
         {
@@ -56,6 +57,7 @@ public class Messenger : PageModel
             Users.Add(new _UserPartial
             {
                 Username = user.Username,
+                DisplayName = user.DisplayName,
                 LastMessageContent = lastMessage.Count > 0 ? lastMessage[0].Content : "",
                 LastMessageTime = lastMessage.Count > 0 ? lastMessage[0].SentAt : new DateTime(2000, 1, 1, 0, 0, 0),
                 IsSender = isSender

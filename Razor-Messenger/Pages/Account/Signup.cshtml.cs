@@ -30,10 +30,13 @@ public class Signup : PageModel
     {
         if (!ModelState.IsValid)
             return Page();
+        
+        if (string.IsNullOrEmpty(Credentials.DisplayName))
+            Credentials.DisplayName = Credentials.Username;
 
         try
         {
-            _authService.Register(Credentials.Username, Credentials.Password);
+            _authService.Register(Credentials.Username, Credentials.DisplayName, Credentials.Password);
         }
         catch (Exception e)
         {
@@ -46,7 +49,7 @@ public class Signup : PageModel
         
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, Credentials.Username),
+            new(ClaimTypes.Name, Credentials.DisplayName),
             new(ClaimTypes.NameIdentifier, Credentials.Username)
         };
         var identity = new ClaimsIdentity(claims, "PizzaSlice");
@@ -65,6 +68,10 @@ public class SignUpCredentialsVm
     [StringLength(20, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 20 characters")]
     [RegularExpression(@"[\w]+", ErrorMessage = "Username can only contain letters, numbers and underscores")]
     public string Username { get; set; }
+    
+    [Display(Name = "Display Name")]
+    [StringLength(20, MinimumLength = 3, ErrorMessage = "Display name must be between 3 and 20 characters")]
+    public string DisplayName { get; set; }
 
     [Required]
     [Display(Name = "Password")]

@@ -24,6 +24,15 @@
         <div class="row mb-3">
             <div class="col-12">
                 <div class="form-floating">
+                    <input type="text" asp-for="Credentials.DisplayName" class="form-control">
+                    <label asp-for="Credentials.DisplayName"></label>
+                    <span class="text-danger" asp-validation-for="Credentials.DisplayName"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
                     <input type="password" asp-for="Credentials.Password" class="form-control">
                     <label asp-for="Credentials.Password"></label>
                     <span class="text-danger" asp-validation-for="Credentials.Password"></span>
