@@ -56,7 +56,20 @@ public class AuthServiceTests
         Assert.Throws<UserAlreadyExistsException>(() => 
             _authService.Register(username, password));
     }
-    
+
+    [Test]
+    public void Register_UserWithDisplayName_NoException()
+    {
+        var username = "adasddd";
+        var password = "TestPassword";
+        var displayName = "TestDisplayName";
+        
+        var user = _authService.Register(username, displayName, password);
+        Assert.IsNotNull(user);
+        Assert.AreEqual(user.Username, username);
+        Assert.AreEqual(user.DisplayName, displayName);
+    }
+
     [Test]
     public void Login_BlankUser_NoException()
     {

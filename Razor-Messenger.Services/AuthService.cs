@@ -21,6 +21,11 @@ public class AuthService : IAuthService
 
     public User Register(string username, string password)
     {
+        return Register(username, username, password);
+    }
+    
+    public User Register(string username, string displayName, string password)
+    {
         if (_context.Users.Any(u => u.Username.ToLower() == username.ToLower()))
         {
             throw new UserAlreadyExistsException();
@@ -29,7 +34,7 @@ public class AuthService : IAuthService
         var salt = CreateSalt(16);
         var hash = HashPassword(password, salt);
 
-        var user = new User(username, hash, salt);
+        var user = new User(username, displayName, hash, salt);
         _context.Users.Add(user);
         _context.SaveChanges();
         
