@@ -38,12 +38,13 @@ public class AuthServiceTests
         var user = _authService.Register(username, password);
         Assert.IsNotNull(user);
         Assert.AreEqual(user.Username, username);
+        Assert.AreEqual(user.DisplayName, username);
         Console.WriteLine(user.Password);
         Console.WriteLine(user.PasswordSalt);
     }
     
     [Test]
-    public void Register_BlankUser_Exception()
+    public void Register_ExistingUser_Exception()
     {
         var username = "asfghhsd";
         var password = "TestPassword";
@@ -67,6 +68,7 @@ public class AuthServiceTests
         var user2 = _authService.Login(username, password);
         Assert.IsNotNull(user2);
         Assert.AreEqual(user2!.Username, username);
+        Assert.AreEqual(user2!.DisplayName, username);
     }
 
     [Test]

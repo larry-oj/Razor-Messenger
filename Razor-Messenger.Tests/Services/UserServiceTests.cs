@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Razor_Messenger.Data;
@@ -58,7 +59,7 @@ public class UserServiceTests
     }
 
     [Test]
-    public void GellAllUsers_ExceptUser_Users()
+    public void GetAllUsers_ExceptUser_Users()
     {
         var users = _userService.GetAllUsers("user_one");
         
@@ -67,10 +68,24 @@ public class UserServiceTests
     }
     
     [Test]
-    public void GellAllUsers_ExceptUser_Exception()
+    public void GetAllUsers_ExceptUser_Exception()
     {
         Assert.Throws<UserDoesNotExistException>(() =>
             _userService.GetAllUsers("user_four"));
     }
     
+    [Test]
+    public async Task UpdateDisplayName_ExistingUser_NoException()
+    {
+        Assert.AreEqual(_userService.GetUser("user_one").DisplayName, "user_one");
+        var user = await _userService.UpdateUserDisplayNameAsync("user_one", "new_display_name");
+        Assert.AreEqual(user!.DisplayName, "new_display_name");
+    }
+    
+    [Test]
+    public void UpdateDisplayName_InvalidUser_Exception()
+    {
+        Assert.Throws<UserDoesNotExistException>(() =>
+            _userService.UpdateUserDisplayNameAsync("user_four", "new_display_name"));
+    }
 }
