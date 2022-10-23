@@ -107,4 +107,46 @@ public class AuthServiceTests
         Assert.Throws<InvalidCredentialsException>(() => 
             _authService.Login(username + "1", password));
     }
+
+    [Test]
+    public void UpdatePassword_RightPassword_NoException()
+    {
+        var username = "pkslxjs11d";
+        var password = "TestPassword";
+        
+        var user = _authService.Register(username, password);
+
+        var newPassword = "NewPassword";
+        _authService.UpdatePassword(username, password, newPassword);
+        
+        var user2 = _authService.Login(username, newPassword);
+        Assert.IsNotNull(user2);
+        Assert.AreEqual(user2!.Username, username);
+    }
+    
+    [Test]
+    public void UpdatePassword_WrongPassword_Exception()
+    {
+        var username = "pkslxjsd21";
+        var password = "TestPassword";
+        
+        var user = _authService.Register(username, password);
+
+        var newPassword = "NewPassword";
+        Assert.Throws<InvalidCredentialsException>(() => 
+            _authService.UpdatePassword(username, password + "1", newPassword));
+    }
+    
+    [Test]
+    public void UpdatePassword_WrongUsername_Exception()
+    {
+        var username = "pkslxjsd31";
+        var password = "TestPassword";
+        
+        var user = _authService.Register(username, password);
+
+        var newPassword = "NewPassword";
+        Assert.Throws<InvalidCredentialsException>(() => 
+            _authService.UpdatePassword(username + "1", password, newPassword));
+    }
 }

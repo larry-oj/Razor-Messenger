@@ -53,6 +53,25 @@ public class AuthService : IAuthService
             
         return user;
     }
+    
+    public User UpdatePassword(string username, string oldPassword, string newPassword)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.Username.ToLower() == username.ToLower());
+        if (user == null)
+            throw new InvalidCredentialsException();
+        
+        var oldHash = HashPassword(oldPassword, user.PasswordSalt);
+        if (oldHash != user.Password)
+            throw new InvalidCredentialsException();
+        
+        var salt = CreateSalt(16);
+        var hash = HashPassword(newPassword, salt);
+        user.Password = hash;
+        user.PasswordSalt = salt;
+        _context.SaveChanges();
+        
+        return user;
+    }
 
     public string HashPassword(string password, string salt)
     {
