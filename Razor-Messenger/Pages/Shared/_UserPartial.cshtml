@@ -5,8 +5,8 @@
 {
     <a asp-area="" asp-page="/Messenger" asp-route-chatUser="@user.Username" id="userlist-@user.Username" class="list-group-item" aria-current="true">
          <div class="d-flex w-100 justify-content-between">
-             <h5 id="userlist-name-@user.Username" class="mb-1 nowrap">
-                 @user.DisplayName <small id="userlist-onlinestatus-@user.Username" class="online-status">●</small>
+             <h5 class="mb-1 nowrap">
+                 <span id="userlist-name-@user.Username">@user.DisplayName</span> <small id="userlist-onlinestatus-@user.Username" class="online-status">●</small>
              </h5>
              @if (user.LastMessageTime.Hour == 0 && user.LastMessageTime.Minute == 0)
              {

@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Razor_Messenger.Data.Models;
+using Razor_Messenger.Hubs;
 using Razor_Messenger.Services;
 using Razor_Messenger.Services.Exceptions;
 
@@ -16,6 +18,7 @@ public class Profile : PageModel
 {
     private readonly IUserService _userService;
     private readonly IAuthService _authService;
+    private readonly IHubContext<UserListHub, IUserListClient> _hub;
     
     public string Username => 
         User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -27,10 +30,12 @@ public class Profile : PageModel
     public PasswordVM PasswordVM { get; set; }
 
     public Profile(IUserService userService, 
-        IAuthService authService)
+        IAuthService authService,
+        IHubContext<UserListHub, IUserListClient> hub)
     {
         _userService = userService;
         _authService = authService;
+        _hub = hub;
     }
     
     public void OnGet()
@@ -45,6 +50,7 @@ public class Profile : PageModel
             return Page();
         
         await _userService.UpdateUserDisplayNameAsync(Username, UserVM.DisplayName);
+        await _hub.Clients.All.UpdateDisplayName(Username, UserVM.DisplayName);
         
         return Page();
     }

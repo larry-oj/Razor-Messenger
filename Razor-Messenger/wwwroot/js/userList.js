@@ -8,7 +8,6 @@ userListConn.on("UpdateLastMessage", function (username, message, messageTime, i
 });
 
 userListConn.on("GetOnlineUsers", function (usernames) {
-    console.log(usernames);
     usernames.forEach(username => {
         document.getElementById(`userlist-onlinestatus-${username}`)
             .classList.add("online");
@@ -16,7 +15,6 @@ userListConn.on("GetOnlineUsers", function (usernames) {
 });
 
 userListConn.on("UpdateOnlineStatus", function (username, isOnline) {
-    console.log(username, isOnline);
     let user = document.getElementById(`userlist-onlinestatus-${username}`);
     if (isOnline) {
         user.classList.add("online");
@@ -24,6 +22,12 @@ userListConn.on("UpdateOnlineStatus", function (username, isOnline) {
         user.classList.remove("online");
     }
 }); 
+
+userListConn.on("UpdateDisplayName", function (username, displayName) {
+    if (username === sender) return;
+    let user = document.getElementById(`userlist-name-${username}`);
+    user.innerText = displayName;
+});
 
 userListConn.start().then(function () { 
     userListConn.invoke("GetOnlineUsers").catch(function (err) {
