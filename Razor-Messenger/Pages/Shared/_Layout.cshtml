@@ -27,6 +27,9 @@
                     </li>
                     @if (base.User.Identity!.IsAuthenticated)
                     {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Profile">Profile</a>
+                        </li>
                         <form method="post" class="form-inline" asp-page="/Account/Logout">
                             <input type="submit" class="btn btn-light mx-2" value="Logout" />
                         </form>

@@ -1,0 +1,79 @@
+﻿@page
+@using System.Security.Claims
+@model Razor_Messenger.Pages.Account.Profile
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container w-100" style="max-width: 400px;">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="text-center">Profile</h1>
+        </div>
+    </div>
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" value="@Model.Username" class="form-control" disabled readonly>
+                    <label>Username</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="text" asp-for="UserVM.DisplayName" class="form-control">
+                    <label asp-for="UserVM.DisplayName"></label>
+                    <span class="text-danger" asp-validation-for="UserVM.DisplayName"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3 d-flex align-items-center">
+            <div class="col-auto">
+                <input type="submit" asp-page-handler="UpdateProfile" class="btn btn-primary" value="Update"/>
+            </div>
+        </div>
+    </form>
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="text-center">Password</h1>
+        </div>
+    </div>
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="password" asp-for="PasswordVM.OldPassword" class="form-control">
+                    <label asp-for="PasswordVM.OldPassword"></label>
+                    <span class="text-danger" asp-validation-for="PasswordVM.OldPassword"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="password" asp-for="PasswordVM.NewPassword" class="form-control">
+                    <label asp-for="PasswordVM.NewPassword"></label>
+                    <span class="text-danger" asp-validation-for="PasswordVM.NewPassword"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="password" asp-for="PasswordVM.ConfirmPassword" class="form-control">
+                    <label asp-for="PasswordVM.ConfirmPassword"></label>
+                    <span class="text-danger" asp-validation-for="PasswordVM.ConfirmPassword"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3 d-flex align-items-center">
+            <div class="col-auto">
+                <input type="submit" asp-page-handler="UpdatePassword" class="btn btn-primary" value="Update"/>
+            </div>
+        </div>
+    </form>
+</div>
