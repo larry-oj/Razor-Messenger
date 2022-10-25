@@ -29,7 +29,7 @@ public class ChatHub : Hub<IChatClient>
         await Clients.Caller.SendMessage(message, time);
         await _userListHub.Clients.User(sender).UpdateLastMessage(receiver, message, time, true);
         
-        await Clients.User(receiver).ReceiveMessage(message, time);
+        await Clients.User(receiver).ReceiveMessage(sender, message, time);
         await _userListHub.Clients.User(receiver).UpdateLastMessage(sender, message, time, false);
     }
 }

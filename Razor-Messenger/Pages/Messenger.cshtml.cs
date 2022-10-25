@@ -13,8 +13,7 @@ public class Messenger : PageModel
     public string? ChatUser { get; set; }
     
     public List<_UserPartial> Users { get; set; }
-    public List<_MessagePartial>? Messages { get; set; }
-    
+
     private readonly IUserService _userService;
     private readonly IMessageService _messageService;
 
@@ -25,21 +24,10 @@ public class Messenger : PageModel
         _messageService = messageService;
     }
     
-    public void OnGet(string? chatUser)
+    public void OnGet()
     {
         var currentUserName = base.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        
-        if (chatUser != null)
-        {
-            ChatUser = chatUser;
-            var messages = _messageService.GetLastMessages(currentUserName, ChatUser, 10);
-            Messages = new List<_MessagePartial>();
-            foreach (var message in messages)
-            {
-                Messages.Add(new _MessagePartial(currentUserName, message));
-            }
-        }
-        
+
         Users = new List<_UserPartial>();
         var users = _userService.GetAllUsers(currentUserName).ToList();
         foreach (var user in users)
@@ -63,5 +51,15 @@ public class Messenger : PageModel
                 IsSender = isSender
             });
         }
+    }
+    
+    public async Task<IActionResult> OnPostSelectUserAsync(string receiver)
+    {
+        var currentUserName = base.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        var messages = _messageService.GetLastMessages(currentUserName, receiver, 10).ToList();
+        var model = new _MessageGroupPartial(currentUserName, receiver, messages);
+        
+        return Partial("_MessageGroupPartial", model);
     }
 }

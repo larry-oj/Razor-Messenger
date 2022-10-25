@@ -24,6 +24,7 @@ builder.Services.AddAuthentication("PizzaSlice")
         config.ExpireTimeSpan = TimeSpan.FromHours(2);
     });
 builder.Services.AddSignalR();
+builder.Services.AddAntiforgery(option => option.HeaderName = "X-XSRF-TOKEN");
 
 var app = builder.Build();
 

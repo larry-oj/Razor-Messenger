@@ -3,8 +3,7 @@
 const chat = document.getElementById("messages-area");
 const sendButton = document.getElementById("new-message-btn");
 const messageInput = document.getElementById("new-message-text");
-
-document.getElementById(`userlist-${receiver}`).classList.add('bg-light');
+const sender = document.getElementById("sender").value;
 
 function scrollToBottom() {
     chat.scrollTop = chat.scrollHeight;
@@ -20,7 +19,9 @@ let connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 sendButton.disabled = true;
 
-connection.on("ReceiveMessage", function (message, messageTime) {
+connection.on("ReceiveMessage", function (messageSender, message, messageTime) {
+    let receiver = document.getElementById("receiver").value;
+    if (messageSender !== receiver) return
     let messageContainer = messageBuilder(message, messageTime, false);
     chat.innerHTML += messageContainer;
     if (chat.scrollTop < 400) {
@@ -43,6 +44,8 @@ connection.start().then(function () {
 sendButton.addEventListener("click", function (event) {
     let message = messageInput.value;
     if (message === "" || message === null) return;
+    
+    let receiver = document.getElementById("receiver").value;
     
     connection.invoke("SendMessage", receiver, message).catch(function (err) {
         return console.error(err.toString());
