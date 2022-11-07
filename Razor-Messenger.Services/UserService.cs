@@ -29,6 +29,12 @@ public class UserService : IUserService
         var user = GetUser(exception);
         return _context.Users.Where(u => u != user);
     }
+    
+    public IEnumerable<User> GetAllUsers(string query, string exception)
+    {
+        var user = GetUser(exception);
+        return _context.Users.Where(u => u != user && (u.Username.ToLower().Contains(query) || u.DisplayName.ToLower().Contains(query)));
+    }
 
     public async Task UpdateUserAsync(User user)
     {

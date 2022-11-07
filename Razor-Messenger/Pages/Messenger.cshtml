@@ -14,15 +14,15 @@
         <div class="col-4 p-0" style="min-width: 300px; max-width: 450px;">
             <div class="container px-2 w-100">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-primary" type="button" id="button-addon2">Button</button>
+                    <input type="text" class="form-control" placeholder="Search user..." id="userlist-search-input" aria-describedby="userlist-search-btn">
+                    <button onclick="searchUsers();event.preventDefault()" class="btn btn-primary" type="button" id="userlist-search-btn">Button</button>
                 </div>
                 <div id="userlist" class="list-group" style="height: 548px; overflow-y: scroll;">
                     <partial name="_UserPartial" model="Model.Users"/>
                 </div>
             </div>
             <input type="hidden" id="sender" value="@base.User.FindFirstValue(ClaimTypes.NameIdentifier)"/>
-            <script src="~/js/userList.js?v=7"></script>
+            <script src="~/js/userList.js?v=8"></script>
         </div>
         <div class="col-7 p-0 px-2 m-0" style="width: 450px;">
             <div class="container p-0 m-0 w-100 d-flex flex-column" style="height: 600px;">
@@ -40,4 +40,4 @@
 
 <input type="hidden" id="receiver" value=""/>
 <script id="chat-signalrhub" src="~/js/chat.js?v=3"></script>
-<script src="~/js/messenger.js?v=4"></script>
+<script src="~/js/messenger.js?v=6"></script>

@@ -26,3 +26,30 @@
         }
     });
 }
+
+function searchUsers() {
+    let query = $("#userlist-search-input").val();
+    console.log(query);
+    $.ajax({
+        url: "/Messenger?handler=SearchUsers",
+        type: 'POST',
+        data: { query: query },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-XSRF-TOKEN",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        },
+        success: function (data)
+        {
+            $("#userlist").html(data);
+            
+            let usernames = getUsernames();
+            userListConn.invoke("GetOnlineUsers", usernames).catch(function (err) {
+                console.error(err.toString());
+            });
+        },
+        failure: function ()
+        {
+            alert("failure");
+        }
+    });
+}

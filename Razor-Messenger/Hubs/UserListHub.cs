@@ -21,8 +21,10 @@ public class UserListHub : Hub<IUserListClient>
         return Clients.Others.UpdateOnlineStatus(user, false);
     }
 
-    public Task GetOnlineUsers()
+    public Task GetOnlineUsers(IEnumerable<string> users)
     {
-        return Clients.Caller.GetOnlineUsers(Users);
+        var online = users.Where(u => Users.Contains(u));
+
+        return Clients.Caller.GetOnlineUsers(online);
     }
 }

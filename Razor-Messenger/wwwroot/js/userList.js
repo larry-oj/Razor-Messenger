@@ -9,8 +9,10 @@ userListConn.on("UpdateLastMessage", function (username, message, messageTime, i
 
 userListConn.on("GetOnlineUsers", function (usernames) {
     usernames.forEach(username => {
-        document.getElementById(`userlist-onlinestatus-${username}`)
-            .classList.add("online");
+        let userDiv = document.getElementById(`userlist-onlinestatus-${username}`);
+        if (userDiv != null || userDiv !== undefined) {
+            userDiv.classList.add("online");
+        }
     });
 });
 
@@ -29,8 +31,21 @@ userListConn.on("UpdateDisplayName", function (username, displayName) {
     user.innerText = displayName;
 });
 
+function getUsernames() {
+    let usernameList = [];
+    let users = document.getElementById("userlist").children;
+    for (let i = 0; i < users.length; i++) {
+        let id = users[i].id.replaceAll("userlist-", "");
+        usernameList.push(id);
+    }
+    
+    return usernameList;
+}
+
 userListConn.start().then(function () { 
-    userListConn.invoke("GetOnlineUsers").catch(function (err) {
+    let usernames = getUsernames();
+    
+    userListConn.invoke("GetOnlineUsers", usernames).catch(function (err) {
         return console.error("yep - " + err.toString());
     });
 }).catch(function (err) {
