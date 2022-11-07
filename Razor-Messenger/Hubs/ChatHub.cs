@@ -22,14 +22,14 @@ public class ChatHub : Hub<IChatClient>
     {
         var sender = base.Context.User!.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        await _messageService.SendMessageAsync(sender, receiver, message);
+        var messageEntity = await _messageService.SendMessageAsync(sender, receiver, message);
 
         var time = DateTime.UtcNow.ToString("hh:mm");
         
         await Clients.Caller.SendMessage(message, time);
-        await _userListHub.Clients.User(sender).UpdateLastMessage(receiver, message, time, true);
+        await _userListHub.Clients.User(sender).UpdateLastMessage(receiver, null, message, time, true);
         
         await Clients.User(receiver).ReceiveMessage(sender, message, time);
-        await _userListHub.Clients.User(receiver).UpdateLastMessage(sender, message, time, false);
+        await _userListHub.Clients.User(receiver).UpdateLastMessage(sender, messageEntity.Sender.DisplayName, message, time, false);
     }
 }

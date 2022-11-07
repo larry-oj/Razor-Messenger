@@ -16,6 +16,20 @@ function messageBuilder(message, messageTime, isSender) {
     return `<div class="p-2 mb-1 d-flex flex-column rounded align-items-end ${styles}" style="width: fit-content; min-width: 10%; max-width: 75%;">     <p class="mb-0 text-wrap">${message}</p>     <small>${messageTime}</small> </div>`
 }
 
+function userlistBuilder(username, displayName, message, messageTime) {
+    return `<a href="#" onclick="selectUser('${username}');event.preventDefault();" id="userlist-${username}" class="list-group-item" aria-current="true">
+         <div class="d-flex w-100 justify-content-between">
+             <h5 class="mb-1 nowrap">
+                 <span id="userlist-name-${username}">${displayName}</span> <small id="userlist-onlinestatus-${username}" class="online-status online">●</small>
+             </h5>
+                 <small id="userlist-time-${username}" class="text-muted">${messageTime}</small>
+         </div>
+        <p id="userlist-message-${username}" class="text-muted mb-1 w-100 nowrap">
+            ${message}
+        </p>
+     </a>`;
+}
+
 let connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 sendButton.disabled = true;

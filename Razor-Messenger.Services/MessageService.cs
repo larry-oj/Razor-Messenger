@@ -15,7 +15,7 @@ public class MessageService : IMessageService
         _context = context;
     }
 
-    public async Task SendMessageAsync(string sender, string receiver, string message)
+    public async Task<Message> SendMessageAsync(string sender, string receiver, string message)
     {
         if (string.IsNullOrEmpty(message))
             throw new EmptyMessageException();
@@ -30,6 +30,11 @@ public class MessageService : IMessageService
         var messageEntity = new Message(senderUser, receiverUser, message);
         _context.Messages.Add(messageEntity);
         await _context.SaveChangesAsync();
+
+        return _context.Messages
+            .Include(m => m.Sender)
+            .Include(m => m.Receiver)
+            .First(m => m == messageEntity);
     }
 
     public IEnumerable<Message> GetLastMessages(string participantOne, string participantTwo, int take)

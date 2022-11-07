@@ -2,7 +2,12 @@
 
 let userListConn = new signalR.HubConnectionBuilder().withUrl("/userListHub").build();
 
-userListConn.on("UpdateLastMessage", function (username, message, messageTime, isSender) {
+userListConn.on("UpdateLastMessage", function (username, displayName, message, messageTime, isSender) {
+    let userDiv = document.getElementById(`userlist-${username}`);
+    if (userDiv == null) {
+        let userlist = document.getElementById('userlist');
+        userlist.innerHTML = userlistBuilder(username, displayName, message, messageTime) + userlist.innerHTML;
+    }
     document.getElementById(`userlist-message-${username}`).innerText = (isSender ? "You: " : "") + message;
     document.getElementById(`userlist-time-${username}`).innerText = messageTime;
 });
