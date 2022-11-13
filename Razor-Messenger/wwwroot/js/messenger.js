@@ -54,3 +54,14 @@ function searchUsers() {
         }
     });
 }
+
+const newMessageButton = document.getElementById("new-message-btn");
+const newMessageText = document.getElementById("new-message-text");
+newMessageText.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+        if (document.activeElement === newMessageText) {
+            event.preventDefault();
+            document.getElementById("new-message-btn").click();
+        }
+    }
+});
