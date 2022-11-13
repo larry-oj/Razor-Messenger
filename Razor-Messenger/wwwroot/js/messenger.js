@@ -1,4 +1,7 @@
-﻿function selectUser(username) {
+﻿function loadMoreButtonBuilder(rec) {
+    return `<button id="load-more-btn" class="btn btn-light align-self-center" onclick="loadMoreMessages('${rec}')">Load more</button>`;
+} 
+function selectUser(username) {
     console.log("execute - " + username);
     $.ajax({
         url: "/Messenger?handler=SelectUser",
@@ -17,8 +20,32 @@
             }
             $(`#userlist-${username}`).addClass('bg-light');
             receiver.val(username);
-            $("#messages-area").html(data);
+            $("#messages-area").html(loadMoreButtonBuilder(username) + data);
             scrollToBottom();
+        },
+        failure: function ()
+        {
+            alert("failure");
+        }
+    });
+}
+
+function loadMoreMessages(username) {
+    let skip = chat.children.length - 1;
+    
+    $.ajax({
+        url: "/Messenger?handler=LoadMoreMessages",
+        type: 'POST',
+        data: { receiver: username, skip: skip },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-XSRF-TOKEN",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        },
+        success: function (data)
+        {
+            let loadMoreButton = loadMoreButtonBuilder($("#receiver").val());
+            chat.innerHTML = chat.innerHTML.replaceAll(loadMoreButton, "");
+            chat.innerHTML = loadMoreButton + data + chat.innerHTML;
         },
         failure: function ()
         {

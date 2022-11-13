@@ -39,6 +39,16 @@ public class Messenger : PageModel
         
         return Partial("_MessageGroupPartial", model);
     }
+    
+    public async Task<IActionResult> OnPostLoadMoreMessagesAsync(string receiver, int skip)
+    {
+        var currentUserName = base.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        var messages = _messageService.GetLastMessages(currentUserName, receiver, skip, 10).ToList();
+        var model = new _MessageGroupPartial(currentUserName, receiver, messages);
+        
+        return Partial("_MessageGroupPartial", model);
+    }
 
     public async Task<IActionResult> OnPostSearchUsersAsync(string? query)
     {
