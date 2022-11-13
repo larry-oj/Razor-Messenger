@@ -25,6 +25,7 @@ builder.Services.AddAuthentication("PizzaSlice")
     });
 builder.Services.AddSignalR();
 builder.Services.AddAntiforgery(option => option.HeaderName = "X-XSRF-TOKEN");
+builder.WebHost.UseUrls("http://*:5030;https://*:5031");
 
 var app = builder.Build();
 
