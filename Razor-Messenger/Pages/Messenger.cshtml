@@ -14,8 +14,7 @@
         <div class="col-4 p-0" style="min-width: 300px; max-width: 450px;">
             <div class="container px-2 w-100">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search user..." id="userlist-search-input" aria-describedby="userlist-search-btn">
-                    <button onclick="searchUsers();event.preventDefault()" class="btn btn-primary" type="button" id="userlist-search-btn">Search</button>
+                    <input type="text" class="form-control" placeholder="Search user..." id="userlist-search-input">
                 </div>
                 <div id="userlist" class="list-group" style="height: 548px; overflow-y: scroll;">
                     <partial name="_UserPartial" model="Model.Users"/>
@@ -40,4 +39,4 @@
 
 <input type="hidden" id="receiver" value=""/>
 <script id="chat-signalrhub" src="~/js/chat.js?v=4"></script>
-<script src="~/js/messenger.js?v=6"></script>
+<script src="~/js/messenger.js?v=9"></script>

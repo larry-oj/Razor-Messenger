@@ -27,6 +27,7 @@
     });
 }
 
+document.getElementById("userlist-search-input").oninput = searchUsers;
 function searchUsers() {
     let query = $("#userlist-search-input").val();
     console.log(query);
