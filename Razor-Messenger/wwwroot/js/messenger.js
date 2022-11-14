@@ -2,7 +2,6 @@
     return `<button id="load-more-btn" class="btn btn-light align-self-center" onclick="loadMoreMessages('${rec}')">Load more</button>`;
 } 
 function selectUser(username) {
-    console.log("execute - " + username);
     $.ajax({
         url: "/Messenger?handler=SelectUser",
         type: 'POST',
@@ -57,7 +56,7 @@ function loadMoreMessages(username) {
 document.getElementById("userlist-search-input").oninput = searchUsers;
 function searchUsers() {
     let query = $("#userlist-search-input").val();
-    console.log(query);
+
     $.ajax({
         url: "/Messenger?handler=SearchUsers",
         type: 'POST',
