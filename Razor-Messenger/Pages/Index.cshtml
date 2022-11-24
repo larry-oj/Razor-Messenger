@@ -4,7 +4,22 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex justify-content-center align-items-center flex-column text-center">
+    <h1>Welcome!</h1>
+    <p class="lead">Razor Messenger is a simple messenger app.<br />Allows registering accounts and sending messages between accounts, holds message history.</p>
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+        <div>
+            <img src="./img/tutor.gif" class="img-fluid" alt="Gif with a tutorial">
+        </div>
+        <div class="text-center">
+            <h2>Get started:</h2>
+            <ol class="text-start">
+                <li><a asp-page="/Account/Signup">Signup</a> or <a asp-page="/Account/Login">Login</a></li>
+                <li>Open a new incognito tab</li>
+                <li><a asp-page="/Account/Signup">Signup</a> or <a asp-page="/Account/Login">Login</a> with another account</li>
+                <li>Go to Messenger</li>
+                <li>Send messages between accounts</li>
+            </ol>
+        </div>
+    </div>
 </div>
