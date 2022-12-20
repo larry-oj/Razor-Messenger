@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Razor_Messenger.Data.Models;
@@ -15,13 +16,13 @@ public class Messenger : PageModel
     
     public List<_UserPartial> Users { get; set; }
 
-    private readonly IUserService _userService;
+    private readonly UserManager<User> _userManager;
     private readonly IMessageService _messageService;
 
-    public Messenger(IUserService userService, 
+    public Messenger(UserManager<User> userManager, 
         IMessageService messageService)
     {
-        _userService = userService;
+        _userManager = userManager;
         _messageService = messageService;
     }
     
@@ -62,15 +63,21 @@ public class Messenger : PageModel
         var currentUserName = base.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var queryIsEmpty = string.IsNullOrEmpty(query);
-        
-        var users = queryIsEmpty ? 
-            _userService.GetAllUsers(currentUserName).ToList() : 
-            _userService.GetAllUsers(query!, currentUserName).ToList();
+
+        var users = queryIsEmpty
+            ? _userManager.Users
+                .Where(u => u.UserName != currentUserName)
+                .ToList()
+            : _userManager.Users
+                .Where(u => u.UserName != currentUserName && 
+                            (u.UserName.ToLower().Contains(query!.ToLower()) || 
+                             u.DisplayName.ToLower().Contains(query.ToLower())))
+                .ToList();
         
         var model = new List<_UserPartial>();
         foreach (var user in users)
         {
-            var lastMessage = _messageService.GetLastMessages(currentUserName, user.Username, 1).ToList();
+            var lastMessage = _messageService.GetLastMessages(currentUserName, user.UserName, 1).ToList();
             if (queryIsEmpty && lastMessage.Count == 0)
                 continue;
 
@@ -78,14 +85,14 @@ public class Messenger : PageModel
             if (lastMessage.Count > 0)
             {
                 var msg = lastMessage[0];
-                if (msg.Sender.Username == currentUserName)
+                if (msg.Sender.UserName == currentUserName)
                 {
                     isSender = true;
                 }
             }
             model.Add(new _UserPartial
             {
-                Username = user.Username,
+                Username = user.UserName,
                 DisplayName = user.DisplayName,
                 LastMessageContent = lastMessage.Count > 0 ? lastMessage[0].Content : "",
                 LastMessageTime = lastMessage.Count > 0 ? lastMessage[0].SentAt : new DateTime(2000, 1, 1, 0, 0, 0),

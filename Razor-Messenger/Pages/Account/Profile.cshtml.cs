@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,8 +17,7 @@ namespace Razor_Messenger.Pages.Account;
 [Authorize]
 public class Profile : PageModel
 {
-    private readonly IUserService _userService;
-    private readonly IAuthService _authService;
+    private readonly UserManager<User> _userManager;
     private readonly IHubContext<UserListHub, IUserListClient> _hub;
     
     public string Username => 
@@ -29,18 +29,16 @@ public class Profile : PageModel
     [BindProperty] 
     public PasswordVM PasswordVM { get; set; }
 
-    public Profile(IUserService userService, 
-        IAuthService authService,
+    public Profile(UserManager<User> userManager,
         IHubContext<UserListHub, IUserListClient> hub)
     {
-        _userService = userService;
-        _authService = authService;
+        _userManager = userManager;
         _hub = hub;
     }
     
-    public void OnGet()
+    public async Task OnGet()
     {
-        var user = _userService.GetUser(Username);
+        var user = await _userManager.FindByNameAsync(Username);
         UserVM = new UserVM(user);
     }
 
@@ -48,35 +46,31 @@ public class Profile : PageModel
     {
         if (!ModelState["UserVM.DisplayName"]!.ValidationState.Equals(ModelValidationState.Valid))
             return Page();
+
+        var user = await _userManager.FindByNameAsync(Username);
+        user.DisplayName = UserVM.DisplayName;
+        await _userManager.UpdateAsync(user);
         
-        await _userService.UpdateUserDisplayNameAsync(Username, UserVM.DisplayName);
         await _hub.Clients.All.UpdateDisplayName(Username, UserVM.DisplayName);
         
         return Page();
     }
     
-    public IActionResult OnPostUpdatePasswordAsync()
+    public async Task<IActionResult> OnPostUpdatePasswordAsync()
     {
-        UserVM = new UserVM(_userService.GetUser(Username));
+        var user = await _userManager.FindByNameAsync(Username);
+        UserVM = new UserVM(user);
         
         ModelState.Remove("DisplayName");
         if (!ModelState.IsValid)
-        {
             return Page();
-        }
 
-        try
-        {
-            var user = _authService.UpdatePassword(Username, PasswordVM.OldPassword, PasswordVM.NewPassword);
-        }
-        catch (Exception ex)
-        {
-            if (ex is not InvalidCredentialsException)
-                return RedirectToPage("/Error");
-            
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _userManager.ResetPasswordAsync(user, token, PasswordVM.NewPassword);
+
+        if (!result.Succeeded)
             ModelState.AddModelError("PasswordVM.OldPassword", "Password is incorrect");
-        }
-        
+
         return Page();
     }
 }

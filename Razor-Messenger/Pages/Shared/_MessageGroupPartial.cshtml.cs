@@ -39,7 +39,7 @@ public class MessagePartial
     {
         CurrentUser = currentUser;
         Message = message;
-        Styles = currentUser == message.Sender.Username ? 
+        Styles = currentUser == message.Sender.UserName ? 
             "bg-primary text-white align-self-end" : "bg-light border text-dark";
     }
 }

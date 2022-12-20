@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Razor_Messenger.Data.Models;
@@ -14,11 +15,11 @@ public class Signup : PageModel
     [BindProperty]
     public SignUpCredentialsVm Credentials { get; set; }
     
-    private readonly IAuthService _authService;
+    private readonly UserManager<User> _userManager;
 
-    public Signup(IAuthService authService)
+    public Signup(UserManager<User> userManager)
     {
-        _authService = authService;
+        _userManager = userManager;
     }
 
     public void OnGet()
@@ -34,19 +35,17 @@ public class Signup : PageModel
         if (string.IsNullOrEmpty(Credentials.DisplayName))
             Credentials.DisplayName = Credentials.Username;
 
-        try
+        var result = await _userManager.CreateAsync(
+            new User { UserName = Credentials.Username, DisplayName = Credentials.DisplayName },
+            Credentials.Password
+        );
+
+        if (!result.Succeeded)
         {
-            _authService.Register(Credentials.Username, Credentials.DisplayName, Credentials.Password);
-        }
-        catch (Exception e)
-        {
-            if (e is not UserAlreadyExistsException) 
-                return RedirectToPage("/Error");
-            
             ModelState.AddModelError("Credentials.Username", "This username is already taken");
             return Page();
         }
-        
+
         var claims = new List<Claim>
         {
             new(ClaimTypes.Name, Credentials.DisplayName),

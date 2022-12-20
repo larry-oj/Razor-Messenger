@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Razor_Messenger.Data.Models;
@@ -12,17 +13,18 @@ namespace Razor_Messenger.Pages.Account;
 public class Login : PageModel
 {
     [BindProperty] public LoginCredentialsVm Credentials { get; set; }
+    public string ReturnUrl { get; set; }
     
-    private readonly IAuthService _authService;
+    private readonly UserManager<User> _userManager;
 
-    public Login(IAuthService authService)
+    public Login(UserManager<User> userManager)
     {
-        _authService = authService;
+        _userManager = userManager;
     }
     
-    public void OnGet()
+    public void OnGet(string returnUrl)
     {
-
+        ReturnUrl = returnUrl;
     }
 
     public async Task<IActionResult> OnPost()
@@ -30,24 +32,22 @@ public class Login : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        User user;
-        try
+        if (await _userManager.FindByNameAsync(Credentials.Username) is not { } user)
         {
-            user = _authService.Login(Credentials.Username, Credentials.Password);
-        }
-        catch (Exception e)
-        {
-            if (e is not InvalidCredentialsException)
-                return RedirectToPage("/Error");
-            
             ModelState.AddModelError("Credentials.Username", "Invalid username or password!");
             return Page();
         }
         
+        if (!await _userManager.CheckPasswordAsync(user, Credentials.Password))
+        {
+            ModelState.AddModelError("Credentials.Password", "Invalid username or password!");
+            return Page();
+        }
+
         var claims = new List<Claim>
         {
             new(ClaimTypes.Name, user.DisplayName),
-            new(ClaimTypes.NameIdentifier, user.Username)
+            new(ClaimTypes.NameIdentifier, user.UserName)
         };
         var identity = new ClaimsIdentity(claims, "PizzaSlice");
         var principal = new ClaimsPrincipal(identity);
@@ -59,7 +59,7 @@ public class Login : PageModel
         
         await HttpContext.SignInAsync("PizzaSlice", principal, authProperties);
 
-        return RedirectToPage("/Index");
+        return RedirectToPage(ReturnUrl ?? "/Index");
     }
 }
 

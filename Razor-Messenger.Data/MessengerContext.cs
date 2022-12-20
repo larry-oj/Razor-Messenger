@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Razor_Messenger.Data.Models;
 
 namespace Razor_Messenger.Data;
 
-public class MessengerContext : DbContext
+public class MessengerContext : IdentityUserContext<User>
 {
-    public DbSet<User> Users { get; set; }
     public DbSet<Message> Messages { get; set; }
 
     public MessengerContext(DbContextOptions<MessengerContext> options)
@@ -15,12 +16,11 @@ public class MessengerContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        base.OnConfiguring(optionsBuilder);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
-            .HasIndex(u => u.Username)
-            .IsUnique();
+        base.OnModelCreating(modelBuilder);
     }
 }

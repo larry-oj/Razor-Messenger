@@ -22,9 +22,9 @@ public class MessageService : IMessageService
         if (sender == receiver)
             throw new MessageToSelfException();
         
-        var senderUser = _context.Users.FirstOrDefault(u => u.Username == sender)
+        var senderUser = _context.Users.FirstOrDefault(u => u.UserName == sender)
                          ?? throw new InvalidSenderException();
-        var receiverUser = _context.Users.FirstOrDefault(u => u.Username == receiver)
+        var receiverUser = _context.Users.FirstOrDefault(u => u.UserName == receiver)
                            ?? throw new InvalidReceiverException();
         
         var messageEntity = new Message(senderUser, receiverUser, message);
@@ -47,9 +47,9 @@ public class MessageService : IMessageService
         if (participantOne == participantTwo)
             throw new MessageToSelfException();
         
-        var userOne = _context.Users.FirstOrDefault(u => u.Username == participantOne) 
+        var userOne = _context.Users.FirstOrDefault(u => u.UserName == participantOne) 
                       ?? throw new InvalidSenderException();
-        var userTwo = _context.Users.FirstOrDefault(u => u.Username == participantTwo) 
+        var userTwo = _context.Users.FirstOrDefault(u => u.UserName == participantTwo) 
                       ?? throw new InvalidReceiverException();
 
         var messages = _context.Messages

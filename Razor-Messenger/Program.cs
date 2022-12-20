@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Razor_Messenger.Data;
+using Razor_Messenger.Data.Models;
 using Razor_Messenger.Hubs;
 using Razor_Messenger.Services;
 using Razor_Messenger.Services.Options;
@@ -14,9 +15,17 @@ builder.Services.AddDbContext<MessengerContext>(ops =>
 {
     ops.UseNpgsql(builder.Configuration.GetSection("Database:ConnectionString").Value);
 });
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddIdentityCore<User>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+}).AddEntityFrameworkStores<MessengerContext>();
 builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAuthentication("PizzaSlice")
     .AddCookie("PizzaSlice", config =>
     {
@@ -40,9 +49,8 @@ if (!app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     var context = services.GetRequiredService<MessengerContext>();
-    context.Database.EnsureCreated();
+    context.Database.Migrate();
 }
 
 app.UseHttpsRedirection();
