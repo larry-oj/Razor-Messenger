@@ -24,7 +24,7 @@ public class ChatHub : Hub<IChatClient>
 
         var messageEntity = await _messageService.SendMessageAsync(sender, receiver, message);
 
-        var time = DateTime.UtcNow.ToString("hh:mm");
+        var time = DateTime.UtcNow.ToString("HH:mm");
         
         await Clients.Caller.SendMessage(message, time);
         await _userListHub.Clients.User(sender).UpdateLastMessage(receiver, null, message, time, true);
