@@ -64,4 +64,16 @@ public class MessageService : IMessageService
 
         return messages;
     }
+
+    public async Task AssignEmotion(Message message, EmotionType emotion)
+    {
+        if (message == null)
+            throw new ArgumentNullException();
+        if (emotion == null)
+            throw new ArgumentNullException();
+        
+        message.Emotion = emotion;
+        
+        await _context.SaveChangesAsync();
+    }
 }

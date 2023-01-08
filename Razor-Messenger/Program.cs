@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection(SecurityOptions.Security));
+builder.Services.AddHttpClient();
 builder.Services.AddDbContext<MessengerContext>(ops =>
 {
     ops.UseNpgsql(builder.Configuration.GetSection("Database:ConnectionString").Value);
@@ -26,6 +27,7 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Password.RequireLowercase = false;
 }).AddEntityFrameworkStores<MessengerContext>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IEmotionService, EmotionService>();
 builder.Services.AddAuthentication("PizzaSlice")
     .AddCookie("PizzaSlice", config =>
     {

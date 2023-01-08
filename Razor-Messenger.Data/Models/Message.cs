@@ -19,6 +19,7 @@ public class Message
     
     public DateTime SentAt { get; set; }
 
+    public EmotionType? Emotion { get; set; }
 
     public Message()
     {
