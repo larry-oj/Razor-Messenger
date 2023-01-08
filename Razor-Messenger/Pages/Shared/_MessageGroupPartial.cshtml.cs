@@ -17,11 +17,26 @@ public class _MessageGroupPartial : PageModel
     public _MessageGroupPartial(string sender, string receiver, List<Message> messages)
     {
         Messages = new List<MessagePartial>();
+        Sender = sender;
         Receiver = receiver;
         foreach (var message in messages)
         {
             Messages.Add(new MessagePartial(sender, message));
         }
+    }
+
+    public string GetColor(Message message)
+    {
+        return message.Emotion!.Name switch
+        {
+            "joy" => "#fbd896",
+            "sadness" => "#82b2f2",
+            "anger" => "#de3b40",
+            "neutral" => "white",
+            "fear" => "#9928b5",
+            "disgust" => "#00cf37",
+            "surprise" => "#ff96dc"
+        };
     }
 }
 

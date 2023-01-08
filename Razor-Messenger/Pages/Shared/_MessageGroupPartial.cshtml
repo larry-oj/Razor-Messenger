@@ -2,7 +2,11 @@
 
 @foreach(var message in Model!.Messages)
 {
-    <div class="p-0 mb-1 d-flex flex-row rounded align-items-end justify-content-between @message.Styles" style="width: fit-content; min-width: 10%; max-width: 75%;">
+    <div id="message-@message.Message.Id" class="p-0 mb-1 d-flex flex-row rounded align-items-end justify-content-between @message.Styles" style="width: fit-content; min-width: 10%; max-width: 75%;">
+        @if (message.Message.Emotion != null && message.CurrentUser != message.Message.Sender.UserName)
+        {
+            <div title="@message.Message.Emotion.Name" class="p-0 m-0 h-100 rounded" style="background-color: @Model.GetColor(message.Message); width: 5px"></div>
+        }
         <div class="p-2 d-flex flex-column align-items-end">
             <p class="mb-0 text-wrap">@message.Message.Content</p>
             <small>@message.Message.SentAt.ToString("HH:mm")</small>

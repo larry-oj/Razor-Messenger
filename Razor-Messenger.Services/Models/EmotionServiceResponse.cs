@@ -14,13 +14,13 @@ public class EmotionServiceResponse
 public class EmotionScores
 {
     [JsonPropertyName("anger")]
-    public int Anger { get; set; }
+    public double Anger { get; set; }
 
     [JsonPropertyName("disgust")]
-    public int Disgust { get; set; }
+    public double Disgust { get; set; }
 
     [JsonPropertyName("fear")]
-    public int Fear { get; set; }
+    public double Fear { get; set; }
 
     [JsonPropertyName("joy")]
     public double Joy { get; set; }

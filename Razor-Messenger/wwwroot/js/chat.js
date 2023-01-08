@@ -11,9 +11,9 @@ function scrollToBottom() {
 }
 scrollToBottom();
 
-function messageBuilder(message, messageTime, isSender) {
+function messageBuilder(message, messageTime, isSender, id) {
     let styles = isSender ? "bg-primary text-white align-self-end" : "bg-light border text-dark";
-    return `<div class="p-2 mb-1 d-flex flex-column rounded align-items-end ${styles}" style="width: fit-content; min-width: 10%; max-width: 75%;">     <p class="mb-0 text-wrap">${message}</p>     <small>${messageTime}</small> </div>`
+    return `<div id="message-${id}" class="p-0 mb-1 d-flex flex-row rounded align-items-end justify-content-between ${styles}" style="width: fit-content; min-width: 10%; max-width: 75%;">     <div class="p-2 d-flex flex-column align-items-end">         <p class="mb-0 text-wrap">${message}</p>         <small>${messageTime}</small>     </div> </div>`
 }
 
 function userlistBuilder(username, displayName, message, messageTime) {
@@ -34,19 +34,26 @@ let connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 sendButton.disabled = true;
 
-connection.on("ReceiveMessage", function (messageSender, message, messageTime) {
+connection.on("ReceiveMessage", function (messageSender, message, messageTime, messageId) {
     if (messageSender !== receiver.value) return
-    let messageContainer = messageBuilder(message, messageTime, false);
+    let messageContainer = messageBuilder(message, messageTime, false, messageId);
     chat.innerHTML += messageContainer;
     if (chat.scrollTop < 400) {
         scrollToBottom();
     }
 });
 
-connection.on("SendMessage", function (message, messageTime) {
-    let messageContainer = messageBuilder(message, messageTime, true);
+connection.on("SendMessage", function (message, messageTime, messageId) {
+    let messageContainer = messageBuilder(message, messageTime, true, messageId);
     chat.innerHTML += messageContainer;
     scrollToBottom();
+});
+
+connection.on("ReceiveEmotionAnalysis", function (messageId, emotion, color) {
+    let message = document.getElementById(`message-${messageId}`);
+    console.log(message);
+    if (!message) return;
+    message.innerHTML = `<div title="${emotion}" class="p-0 m-0 h-100 rounded" style="background-color: ${color}; width: 5px"></div>` + message.innerHTML;
 });
 
 connection.start().then(function () {

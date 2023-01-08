@@ -32,12 +32,12 @@ public class EmotionService : IEmotionService
             RequestUri = new Uri("https://twinword-emotion-analysis-v1.p.rapidapi.com/analyze/"),
             Headers =
             {
-                { "X-RapidAPI-Key", "5c7f9c4923msh5719d88f322af33p115ebfjsna141398143a7" },
-                { "X-RapidAPI-Host", "twinword-emotion-analysis-v1.p.rapidapi.com" },
+                { "X-RapidAPI-Key", _configuration.GetSection("EmotionService:Key").Value },
+                { "X-RapidAPI-Host", _configuration.GetSection("EmotionService:Host").Value }
             },
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                { "text", "After living abroad for such a long time, seeing my family was the best present I could have ever wished for." },
+                { "text", message },
             }),
         };
 
@@ -57,6 +57,8 @@ public class EmotionService : IEmotionService
         {
             emotion = "neutral";
         }
+        
+        Console.WriteLine("EMOTION: " + emotion);
 
         if (_context.EmotionTypes.FirstOrDefault(e => e.Name.ToLower() == emotion.ToLower()) is not { } emotionEntity)
         {

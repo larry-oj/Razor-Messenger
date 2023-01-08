@@ -55,6 +55,7 @@ public class MessageService : IMessageService
         var messages = _context.Messages
             .Include(m => m.Sender)
             .Include(m => m.Receiver)
+            .Include(m => m.Emotion)
             .Where(m => (m.Sender == userOne && m.Receiver == userTwo) || 
                         (m.Receiver == userOne && m.Sender == userTwo))
             .OrderByDescending(m => m.SentAt) 
