@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Razor_Messenger.Data;
@@ -11,9 +12,10 @@ using Razor_Messenger.Data;
 namespace Razor_Messenger.Data.Migrations
 {
     [DbContext(typeof(MessengerContext))]
-    partial class MessengerContextModelSnapshot : ModelSnapshot
+    [Migration("20230109110833_BlockedUsers")]
+    partial class BlockedUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,31 +88,6 @@ namespace Razor_Messenger.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Razor_Messenger.Data.Models.BlockedUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("InitiatorId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TargetId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InitiatorId");
-
-                    b.HasIndex("TargetId");
-
-                    b.ToTable("BlockedUsers");
                 });
 
             modelBuilder.Entity("Razor_Messenger.Data.Models.EmotionType", b =>
@@ -260,25 +237,6 @@ namespace Razor_Messenger.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Razor_Messenger.Data.Models.BlockedUser", b =>
-                {
-                    b.HasOne("Razor_Messenger.Data.Models.User", "Initiator")
-                        .WithMany()
-                        .HasForeignKey("InitiatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Razor_Messenger.Data.Models.User", "Target")
-                        .WithMany()
-                        .HasForeignKey("TargetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Initiator");
-
-                    b.Navigation("Target");
                 });
 
             modelBuilder.Entity("Razor_Messenger.Data.Models.Message", b =>

@@ -9,6 +9,8 @@ public class MessengerContext : IdentityUserContext<User>
 {
     public DbSet<Message> Messages { get; set; }
     public DbSet<EmotionType> EmotionTypes { get; set; }
+    
+    public DbSet<BlockedUser> BlockedUsers { get; set; }
 
     public MessengerContext(DbContextOptions<MessengerContext> options)
         : base(options)
