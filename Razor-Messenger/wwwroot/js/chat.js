@@ -5,6 +5,7 @@ const sendButton = document.getElementById("new-message-btn");
 const messageInput = document.getElementById("new-message-text");
 const sender = document.getElementById("sender");
 const receiver = document.getElementById("receiver");
+const blockUserBtn = document.getElementById("block-user-btn");
 
 function scrollToBottom() {
     chat.scrollTop = chat.scrollHeight;
@@ -56,6 +57,21 @@ connection.on("ReceiveEmotionAnalysis", function (messageId, emotion, color) {
     message.innerHTML = `<div title="${emotion}" class="p-0 m-0 h-100 rounded" style="background-color: ${color}; width: 5px"></div>` + message.innerHTML;
 });
 
+connection.on("Blocked", function (initiator, target) {
+    let messageText = "";
+    if (sender.value === initiator && receiver.value === target) 
+        messageText = "You have blocked / unblocked this user.";
+    
+    if (receiver.value === initiator && sender.value === target)
+        messageText = "This user has blocked / unblocked you.";
+    
+    let messageContainer = messageBuilder(messageText, "", false, -1);
+    chat.innerHTML += messageContainer;
+    if (chat.scrollTop < 400) {
+        scrollToBottom();
+    }
+});
+
 connection.start().then(function () {
     sendButton.disabled = false;
 }).catch(function (err) {
@@ -71,5 +87,14 @@ sendButton.addEventListener("click", function (event) {
     });
 
     messageInput.value = "";
+    event.preventDefault();
+});
+
+blockUserBtn.addEventListener("click", function (event) {
+    if (receiver.value === "") return;
+    connection.invoke("BlockUser", receiver.value)
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
     event.preventDefault();
 });

@@ -28,6 +28,7 @@ builder.Services.AddIdentityCore<User>(options =>
 }).AddEntityFrameworkStores<MessengerContext>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IEmotionService, EmotionService>();
+builder.Services.AddScoped<IBlockService, BlockService>();
 builder.Services.AddAuthentication("PizzaSlice")
     .AddCookie("PizzaSlice", config =>
     {
